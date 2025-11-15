@@ -11,6 +11,11 @@
   (set-lookup-handlers! 'agda2-mode
     :definition #'agda2-goto-definition-keyboard)
 
+  ;; Fix for issue https://github.com/agda/agda/issues/5664
+  ;; where agda-mode does not pickup the envrc environment.
+  (when (modulep! :tools direnv)
+    (advice-add 'agda2-restart :before 'envrc--update))
+
   ;; TODO: agda2-ts-mode
 
   (map! :map agda2-mode-map
